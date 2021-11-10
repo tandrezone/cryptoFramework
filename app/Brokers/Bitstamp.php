@@ -7,8 +7,14 @@ use ccxt\bitstamp as ccxtBitstamp;
 
 class Bitstamp extends Broker implements BrokerInterface
 {
+    /**
+     * @var ccxtBitstamp
+     */
     private $exchange;
 
+    /**
+     * @throws \ccxt\ExchangeError
+     */
     public function __construct()
     {
         $this->exchange = new ccxtBitstamp(array(
@@ -16,6 +22,7 @@ class Bitstamp extends Broker implements BrokerInterface
             'secret' => env('BITSTAMP_API_SECRET'),
         ));
     }
+
 
     public function getBalance() {
         return $this->exchange->fetch_balance();
