@@ -34,9 +34,10 @@ class Account extends Model
      * Get the needed info from the broker related to my account
      * @param Broker $broker
      */
-    public function setAccount(Broker $broker) : void
+    public function createAccount(Broker $broker) : Account
     {
         $balance = $broker->getBalance();
         $this->balance = $balance;
+        return $this;
     }
 }
