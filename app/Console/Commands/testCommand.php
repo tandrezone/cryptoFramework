@@ -2,19 +2,18 @@
 
 namespace App\Console\Commands;
 
-use App\Brokers\Simulator;
 use App\Brokers\BrokerManager;
 use App\Models\Account;
 use Illuminate\Console\Command;
 
-class testBroker extends testCommand
+class testCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'test:broker';
+    protected $signature = 'command:name';
 
     /**
      * The console command description.
@@ -23,6 +22,8 @@ class testBroker extends testCommand
      */
     protected $description = 'Command description';
 
+    public $broker;
+    public $account;
     /**
      * Create a new command instance.
      *
@@ -30,7 +31,9 @@ class testBroker extends testCommand
      */
     public function __construct(BrokerManager $broker, Account $account)
     {
-        parent::__construct($broker, $account);
+        $this->broker = $broker;
+        $this->account = $account;
+        parent::__construct();
     }
 
     /**
@@ -40,9 +43,6 @@ class testBroker extends testCommand
      */
     public function handle()
     {
-        $broker = $this->broker->getBroker(Simulator::class);
-        print_r(json_encode($broker->createOrder('UMA', 'trade', 'sell', '1', '14444' )));
-        print_r(json_encode($broker->getOpenOrders()));
         return Command::SUCCESS;
     }
 }

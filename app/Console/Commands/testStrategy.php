@@ -2,19 +2,21 @@
 
 namespace App\Console\Commands;
 
-use App\Brokers\Simulator;
+use App\Brokers\Bitstamp;
 use App\Brokers\BrokerManager;
+use App\Brokers\Simulator;
 use App\Models\Account;
+use App\Strategies\ExampleStrategy;
 use Illuminate\Console\Command;
 
-class testBroker extends testCommand
+class testStrategy extends testCommand
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'test:broker';
+    protected $signature = 'test:strategy';
 
     /**
      * The console command description.
@@ -40,9 +42,11 @@ class testBroker extends testCommand
      */
     public function handle()
     {
-        $broker = $this->broker->getBroker(Simulator::class);
-        print_r(json_encode($broker->createOrder('UMA', 'trade', 'sell', '1', '14444' )));
-        print_r(json_encode($broker->getOpenOrders()));
-        return Command::SUCCESS;
+        $broker = $this->broker->getBroker(Bitstamp::class);
+        $account = $this->account->createAccount($broker);
+        $strategy = new ExampleStrategy($broker, $account);
+        while(1) {
+            $strategy->run();
+        }
     }
 }
